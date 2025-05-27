@@ -1,0 +1,38 @@
+﻿@model AutoInsurance.Models.Policy
+@{
+    ViewData["Title"] = "Search Policy by ID";
+}
+
+<h2 class="mb-4">Search Policy by ID</h2>
+
+<form asp-action="GetPolicyById" method="post" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="number" name="id" class="form-control" placeholder="Enter Policy ID" required />
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+</form>
+
+@if (Model != null)
+{
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            Policy Details
+        </div>
+        <div class="card-body">
+            <p><strong>Policy Number:</strong> @Model.PolicyNumber</p>
+            <p><strong>Vehicle Details:</strong> @Model.VehicleDetails</p>
+            <p><strong>Coverage:</strong> @Model.CoverageAmount (@Model.CoverageType)</p>
+            <p><strong>Premium:</strong> @Model.PremiumAmount</p>
+            <p><strong>Start Date:</strong> @(Model.StartDate.HasValue ? Model.StartDate.Value.ToString("MM/dd/yyyy") : "N/A")</p>
+            <p><strong>End Date:</strong> @(Model.EndDate.HasValue ? Model.EndDate.Value.ToString("MM/dd/yyyy") : "N/A")</p>
+
+            <p><strong>Status:</strong> @Model.PolicyStatus</p>
+        </div>
+    </div>
+}
+else if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning">@ViewBag.Message</div>
+}

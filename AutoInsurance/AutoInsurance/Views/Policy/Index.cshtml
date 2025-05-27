@@ -1,0 +1,193 @@
+﻿@model IEnumerable<AutoInsurance.Models.Policy>
+
+@{
+    ViewData["Title"] = "Policy List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Add New Policy</a>
+</p>
+<!-- Search Policy by ID -->
+<form asp-action="GetPolicyById" method="post" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="number" name="id" class="form-control" placeholder="Enter Policy ID" required />
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+    </div>
+</form>
+
+
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>Policy #</th>
+            <th>Vehicle</th>
+            <th>Coverage</th>
+            <th>Premium</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var policy in Model)
+        {
+            <tr>
+                <td>@policy.PolicyNumber</td>
+                <td>@policy.VehicleDetails</td>
+                <td>@policy.CoverageAmount (@policy.CoverageType)</td>
+                <td>@policy.PremiumAmount</td>
+                <td>@(policy.StartDate.HasValue ? policy.StartDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                <td>@(policy.EndDate.HasValue ? policy.EndDate.Value.ToString("MM/dd/yyyy") : "N/A")</td>
+                <td>@policy.PolicyStatus</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                            data-policy-id="@policy.PolicyId"
+                            data-policy-number="@policy.PolicyNumber"
+                            data-policy-vehicle="@policy.VehicleDetails"
+                            data-policy-coverage="@policy.CoverageAmount"
+                            data-policy-type="@policy.CoverageType"
+                            data-policy-premium="@policy.PremiumAmount"
+                            data-policy-start="@policy.StartDate"
+                            data-policy-end="@policy.EndDate"
+                            data-policy-status="@policy.PolicyStatus">
+                        Edit
+                    </button>
+
+                    <!-- Delete Button to trigger modal -->
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-policy-id="@policy.PolicyId"
+                            data-policy-number="@policy.PolicyNumber"
+                            data-policy-vehicle="@policy.VehicleDetails"
+                            data-policy-status="@policy.PolicyStatus">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Bootstrap Edit Policy Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" asp-action="Edit" method="post">
+                    <input type="hidden" name="PolicyId" id="editPolicyId" />
+                    <div class="mb-3">
+                        <label for="editPolicyNumber" class="form-label">Policy Number</label>
+                        <input type="text" class="form-control" id="editPolicyNumber" name="PolicyNumber" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editVehicleDetails" class="form-label">Vehicle Details</label>
+                        <input type="text" class="form-control" id="editVehicleDetails" name="VehicleDetails" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCoverageAmount" class="form-label">Coverage Amount</label>
+                        <input type="text" class="form-control" id="editCoverageAmount" name="CoverageAmount" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editCoverageType" class="form-label">Coverage Type</label>
+                        <input type="text" class="form-control" id="editCoverageType" name="CoverageType" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPremiumAmount" class="form-label">Premium Amount</label>
+                        <input type="text" class="form-control" id="editPremiumAmount" name="PremiumAmount" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editStartDate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="editStartDate" name="StartDate" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEndDate" class="form-label">End Date</label>
+                        <input type="date" class="form-control" id="editEndDate" name="EndDate" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPolicyStatus" class="form-label">Status</label>
+                        <input type="text" class="form-control" id="editPolicyStatus" name="PolicyStatus" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the following policy?</p>
+                <dl class="row">
+                    <dt class="col-sm-3">Policy Number</dt>
+                    <dd class="col-sm-9" id="policyNumber"></dd>
+
+                    <dt class="col-sm-3">Vehicle Details</dt>
+                    <dd class="col-sm-9" id="policyVehicle"></dd>
+
+                    <dt class="col-sm-3">Status</dt>
+                    <dd class="col-sm-9" id="policyStatus"></dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" asp-action="Delete" method="post">
+                    <input type="hidden" name="PolicyId" id="policyId" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script to Populate Modal with Selected Policy Data -->
+<script>
+    var editModal = document.getElementById('editModal');
+
+        editModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+
+            // Fetch values and assign them to modal fields
+            document.getElementById('editPolicyId').value = button.getAttribute('data-policy-id');
+            document.getElementById('editPolicyNumber').value = button.getAttribute('data-policy-number');
+            document.getElementById('editVehicleDetails').value = button.getAttribute('data-policy-vehicle');
+            document.getElementById('editCoverageAmount').value = button.getAttribute('data-policy-coverage');
+            document.getElementById('editCoverageType').value = button.getAttribute('data-policy-type');
+            document.getElementById('editPremiumAmount').value = button.getAttribute('data-policy-premium');
+            document.getElementById('editStartDate').value = button.getAttribute('data-policy-start');
+            document.getElementById('editEndDate').value = button.getAttribute('data-policy-end');
+            document.getElementById('editPolicyStatus').value = button.getAttribute('data-policy-status');
+        });
+
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var policyId = button.getAttribute('data-policy-id');
+        var policyNumber = button.getAttribute('data-policy-number');
+        var policyVehicle = button.getAttribute('data-policy-vehicle');
+        var policyStatus = button.getAttribute('data-policy-status');
+
+        document.getElementById('policyId').value = policyId;
+        document.getElementById('policyNumber').textContent = policyNumber;
+        document.getElementById('policyVehicle').textContent = policyVehicle;
+        document.getElementById('policyStatus').textContent = policyStatus;
+    });
+</script>

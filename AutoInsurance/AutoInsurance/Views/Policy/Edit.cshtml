@@ -1,0 +1,44 @@
+﻿@model AutoInsurance.Models.Policy
+@{
+    ViewData["Title"] = "Edit Policy";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post" class="row g-3">
+    <input type="hidden" asp-for="PolicyId" />
+    <div class="col-md-6">
+        <label asp-for="PolicyNumber" class="form-label"></label>
+        <input asp-for="PolicyNumber" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label asp-for="VehicleDetails" class="form-label"></label>
+        <input asp-for="VehicleDetails" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CoverageAmount" class="form-label"></label>
+        <input asp-for="CoverageAmount" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CoverageType" class="form-label"></label>
+        <input asp-for="CoverageType" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="PremiumAmount" class="form-label"></label>
+        <input asp-for="PremiumAmount" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" class="form-control" type="date" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="PolicyStatus" class="form-label"></label>
+        <input asp-for="PolicyStatus" class="form-control" />
+    </div>
+    <div class="col-md-3 d-grid">
+        <button type="submit" class="btn btn-primary mt-4">Update</button>
+    </div>
+</form>

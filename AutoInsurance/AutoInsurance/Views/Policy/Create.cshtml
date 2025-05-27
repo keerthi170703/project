@@ -1,0 +1,115 @@
+﻿@model AutoInsurance.Models.Policy
+@{
+    ViewData["Title"] = "Create Policy";
+}
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post" class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="PolicyNumber" class="form-label"></label>
+        <input asp-for="PolicyNumber" class="form-control" />
+    </div>
+    <div class="col-md-6">
+        <label asp-for="VehicleDetails" class="form-label"></label>
+        <input asp-for="VehicleDetails" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CoverageAmount" class="form-label"></label>
+        <input asp-for="CoverageAmount" id="coverageAmount" class="form-control" type="number" step="0.01" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CoverageType" class="form-label"></label>
+        <input asp-for="CoverageType" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="PremiumAmount" class="form-label"></label>
+        <input asp-for="PremiumAmount" id="premiumAmount" class="form-control" type="number" step="0.01" readonly />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" id="startDate" class="form-control" type="date" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Duration (in months)</label>
+        <input id="duration" class="form-control" type="number" min="1" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" id="endDate" class="form-control" type="date" readonly />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="PolicyStatus" class="form-label"></label>
+        <input asp-for="PolicyStatus" id="PolicyStatus" class="form-control" readonly />
+    </div>
+    <div class="col-md-3 d-grid">
+        <button type="submit" class="btn btn-success mt-4">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        const startDateEl = document.getElementById("startDate");
+        const durationEl = document.getElementById("duration");
+        const endDateEl = document.getElementById("endDate");
+        const coverageEl = document.getElementById("coverageAmount");
+        const premiumEl = document.getElementById("premiumAmount");
+        const policyStatusEl = document.getElementById("PolicyStatus");
+
+        // Auto-fill today's date on page load if empty
+        if (!startDateEl.value) {
+            const today = new Date().toISOString().split('T')[0];
+            startDateEl.value = today;
+        }
+
+        function getDiscountPercentage(duration) {
+            if (duration > 24) return 15;
+            if (duration > 12) return 10;
+            if (duration > 6) return 5;
+            return 0;
+        }
+
+        function updatePolicyStatus(startDateStr, endDateStr) {
+            const today = new Date();
+            const startDate = new Date(startDateStr);
+            const endDate = new Date(endDateStr);
+
+            if (today < startDate) {
+                policyStatusEl.value = "INACTIVE";
+            } else if (today >= startDate && today <= endDate) {
+                policyStatusEl.value = "ACTIVE";
+            } else if (today > endDate) {
+                policyStatusEl.value = "RENEWED";
+            }
+        }
+
+        function calculateEndDateAndPremium() {
+            const startDateValue = startDateEl.value;
+            const duration = parseInt(durationEl.value);
+            const coverageAmount = parseFloat(coverageEl.value);
+
+            if (startDateValue && duration > 0) {
+                const startDate = new Date(startDateValue);
+                const endDate = new Date(startDate);
+                endDate.setMonth(startDate.getMonth() + duration);
+                const formattedEndDate = endDate.toISOString().split('T')[0];
+                endDateEl.value = formattedEndDate;
+
+                updatePolicyStatus(startDateValue, formattedEndDate);
+            }
+
+            if (!isNaN(coverageAmount) && duration > 0) {
+                const baseMonthlyPremium = coverageAmount * 0.01;
+                const discount = getDiscountPercentage(duration);
+                const discountedMonthlyPremium = baseMonthlyPremium * (1 - discount / 100);
+                const totalPremium = discountedMonthlyPremium * duration;
+                premiumEl.value = totalPremium.toFixed(2);
+            }
+        }
+
+        startDateEl.addEventListener("change", calculateEndDateAndPremium);
+        durationEl.addEventListener("input", calculateEndDateAndPremium);
+        coverageEl.addEventListener("input", calculateEndDateAndPremium);
+    </script>
+}
+
+
