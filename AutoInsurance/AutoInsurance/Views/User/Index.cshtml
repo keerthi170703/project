@@ -1,0 +1,317 @@
+﻿
+<div class="slider-container">
+    <img src="https://www.nlgi.com.np/media/kk2hupzd/policy-side.jpg?width=500" class="active" alt="Auto Insurance">
+    <img src="https://tse1.mm.bing.net/th/id/OIP.IJie1sez_vgBsVF2aqMqewHaG_?rs=1&pid=ImgDetMain" alt="Car Insurance">
+    <img src="https://fundpinnacle.b-cdn.net/wp-content/uploads/2022/09/car-insurance-renewal-1.jpg" alt="Road Protection">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.y6WXmtilPHfzlrF_8iRGWgHaEO?w=1006&h=575&rs=1&pid=ImgDetMain" alt="Accident Assistance">
+
+    <!-- Navigation Buttons -->
+    <button class="prev-btn" onclick="prevSlide()">&#10094;</button>
+    <button class="next-btn" onclick="nextSlide()">&#10095;</button>
+</div>
+
+<style>
+
+
+
+    .slider-container {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        overflow: hidden;
+        margin-bottom: 100px;
+    }
+
+        .slider-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures full image display */
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+            .slider-container img.active {
+                opacity: 1;
+            }
+
+    /* Navigation Buttons */
+    .prev-btn, .next-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .prev-btn {
+        left: 10px;
+    }
+
+    .next-btn {
+        right: 10px;
+    }
+</style>
+
+<script>
+    let slides = document.querySelectorAll(".slider-container img");
+    let currentIndex = 0;
+
+    function changeSlide() {
+        slides[currentIndex].classList.remove("active");
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides[currentIndex].classList.add("active");
+    }
+
+    function prevSlide() {
+        slides[currentIndex].classList.remove("active");
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        slides[currentIndex].classList.add("active");
+    }
+
+    function nextSlide() {
+        changeSlide();
+    }
+
+    setInterval(changeSlide, 5000); // Auto-change every 5 seconds
+</script>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+         /* Adds 10cm (100 pixels) of space above */
+    }
+
+ .card {
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+  
+        opacity: 0; /* Initially hidden */
+        transform: translateY(50px); /* Start slightly below */
+        transition: opacity 0.8s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Hover Effect: Full Box Turns Grey */
+            .card:hover {
+                    background-color: #d3d3d3; /* Light grey */
+                    box-shadow: 0px 10px 20px rgba(128, 128, 128, 0.4);
+                    transform: scale(1.05);
+                }
+
+        /* When in view, cards fade in */
+        .card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        /* Fix Image Size */
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        /* Make Text Bold Black & Change to Blue on Hover */
+        .card h3 {
+            color: black; /* Default black */
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .card:hover h3 {
+            color: #007bff; /* Turns blue on hover */
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Add More Space Between Sections */
+    .row {
+        margin-bottom: 30px; /* Creates spacing between rows */
+    }
+</style>
+
+<div class="container">
+    <h2 class="text-center text-dark fw-bold mb-6">Dashboard</h2> <!-- Increased margin below -->
+
+    <div class="row pt-6 mb-6">
+        <!-- Extra spacing added -->
+        <!-- Policy Box -->
+        <div class="col-md-6">
+            <div class="card p-5 shadow-lg">
+                <img src="https://cdn-icons-png.freepik.com/256/11336/11336991.png?semt=ais_hybrid" alt="Policy Icon">
+                <h3 class="fw-bold text-dark">Manage Policies</h3>
+            </div>
+        </div>
+
+        <!-- Claims Box -->
+        <div class="col-md-6">
+            <div class="card p-5 shadow-lg">
+                <img src="https://cdn4.iconfinder.com/data/icons/human-resources-money-market-payment-method/66/29-512.png" alt="Claims Icon">
+                <h3 class="fw-bold text-dark">Claims Management</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Row: Payments & Support Below -->
+    <div class="row mt-6 pt-6">
+        <!-- Increased spacing again -->
+        <!-- Payments Box -->
+        <div class="col-md-6">
+            <div class="card p-5 shadow-lg">
+                <img src="https://cdn-icons-png.freepik.com/512/3458/3458714.png" alt="Payments Icon">
+                <h3 class="fw-bold text-dark">Payment Management</h3>
+            </div>
+        </div>
+
+        <!-- Support Box -->
+        <div class="col-md-6">
+            <div class="card p-5 shadow-lg">
+                <img src="https://cdn-icons-png.flaticon.com/512/2618/2618521.png" alt="Support Icon">
+                <h3 class="fw-bold text-dark">Customer Support</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let cards = document.querySelectorAll(".card");
+
+        let observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show"); // Adds fade-in effect
+                }else {
+                    entry.target.classList.remove("show"); // Fade out effect
+                }
+            });
+        }, { threshold: 0.2 });
+
+        cards.forEach(card => {
+            observer.observe(card);
+        });
+    });
+</script>
+
+
+
+<!-- About Us Section -->
+<footer class="footer-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Company Info</h4>
+                <p>Comprehensive Insurance Portfolio Management Software for Insurance Agents, covering almost all aspects of insurance management.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Quick Links</h4>
+                <ul class="no-bullets">
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Insurance Modules</a></li>
+                    <li><a href="#">Insurance Agency</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Contact</h4>
+                <p>Email: info@insurebook.in</p>
+                <p>Location: 302, Harikrishna Arcade, 150 Feet Ring Road, Rajkot - 360004.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .about-us-container {
+        background-color: #f9f9f9;
+        padding: 50px;
+        opacity: 0; /* Initially hidden */
+        transform: translateY(50px);
+        transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+    }
+
+        .about-us-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-us-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .about-us-container ul li {
+                padding: 5px 0;
+            }
+
+                .about-us-container ul li a {
+                    text-decoration: none;
+                    color: #007bff;
+                }
+
+                    .about-us-container ul li a:hover {
+                        text-decoration: underline;
+                    }
+
+    .footer-container {
+        background-color: #333;
+        color: white;
+        padding: 40px 0;
+        text-align: center;
+    }
+
+        .footer-container a {
+            color: #f8f8f8;
+            text-decoration: none;
+        }
+
+            .footer-container a:hover {
+                text-decoration: underline;
+                color: #007bff;
+            }
+
+    .no-bullets {
+        list-style: none; /* Removes bullet points */
+        padding: 0;
+        margin: 0;
+    }
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let aboutUs = document.querySelector(".about-us-container");
+
+        let observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show"); // Adds fade-in effect
+                } else {
+                    entry.target.classList.remove("show"); // Fades out when scrolling away
+                }
+            });
+        }, { threshold: 0.2 });
+
+        observer.observe(aboutUs);
+    });
+</script>
